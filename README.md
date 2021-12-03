@@ -16,7 +16,7 @@
 ## How to use
 
 There's supposed to be button which you use to shuffle and sort the array.
-Well there are, I guess, --but not drawn out to the user-- but not labeled (Yet!). So here are the controls:
+Well there are, I guess, ~~but not drawn out to the user~~ but not labeled (Yet!). So here are the controls:
 
 Going left to right:
 
