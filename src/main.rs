@@ -3,14 +3,22 @@ use colorgrad::*;
 
 use rand::{thread_rng, seq::SliceRandom};
 
-
-/// Size of grid in cells. (X, Y)
-const GRID_SIZE: (f32, f32) = (120.0, 80.0);
-
-/// Defines the lenght of a side for the square grid cell in pixels.
+/// Defines the lenght of a side for the square grid cell in pixels
 const GRID_CELL_SIZE: f32 = 10.0;
 
-/// Size of the application screen
+/// Size of grid in cells (X, Y)
+const GRID_SIZE: (f32, f32) = (120.0, 80.0);
+
+/// Size of a side of square button in cells 
+const BUTTON_SIZE: f32 = 20.0;
+
+/// Size of the margin in cells
+const MARGIN_SIZE: f32 = 10.0;
+
+/// Size array area in cells (X, Y)
+const ARRAY_AREA_SIZE: (f32, f32) = (100.0, 30.0);
+
+/// Size of the application screen in pixels (W, H)
 const SCREEN_SIZE: (f32, f32) = (
     GRID_SIZE.0 * GRID_CELL_SIZE,
     GRID_SIZE.1 * GRID_CELL_SIZE
@@ -178,10 +186,10 @@ impl event::EventHandler<GameError> for AppState {
                 ctx, 
                 graphics::DrawMode::fill(), 
                 graphics::Rect::new(
-                    10.0 * GRID_CELL_SIZE + i as f32 * GRID_CELL_SIZE,
-                    40.0 * GRID_CELL_SIZE - self.array[i] as f32 * (30.0 * GRID_CELL_SIZE)/100.0,
-                    GRID_CELL_SIZE-5.0,
-                    self.array[i] as f32 * (30.0 * GRID_CELL_SIZE)/100.0),
+                     MARGIN_SIZE * GRID_CELL_SIZE + i as f32 * GRID_CELL_SIZE,
+                     MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE - self.array[i] as f32 * (ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE)/100.0,
+                    GRID_CELL_SIZE/2.0,
+                    self.array[i] as f32 * (ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE)/100.0),
                 self.get_color(self.array[i])
             ).expect("Failed to create bar");
             graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
@@ -193,43 +201,91 @@ impl event::EventHandler<GameError> for AppState {
             ctx, 
             graphics::DrawMode::fill(), 
             graphics::Rect::new(
-                10.0 * GRID_CELL_SIZE,
-                50.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
+                MARGIN_SIZE * GRID_CELL_SIZE,
+                2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
             ),
             self.get_color(0)
         ).expect("Failed to create button");
         graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
             .expect("Failed to draw bar");
 
+        let text = graphics::Text::new(
+            graphics::TextFragment::from(format!("SHUFFLE"))
+                .scale(graphics::PxScale { x: 30.0, y: 30.0 }),
+        );
+        let text_dimensions = text.dimensions(ctx);
+        graphics::draw(
+            ctx,
+            &text,
+            graphics::DrawParam::default()
+                .color(EzColor::BLACK)
+                .dest(ggez::mint::Point2 {
+                    x: MARGIN_SIZE * GRID_CELL_SIZE + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.w) / 2.0,
+                    y: 2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.h) / 2.0,
+                }),
+        ).expect("Failed to draw text.");
+
         let rectangle = graphics::Mesh::new_rectangle(
             ctx, 
             graphics::DrawMode::fill(), 
             graphics::Rect::new(
-                60.0 * GRID_CELL_SIZE - 10.0 * GRID_CELL_SIZE,
-                50.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
+                GRID_SIZE.0 * GRID_CELL_SIZE / 2.0 - BUTTON_SIZE * GRID_CELL_SIZE / 2.0,
+                2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
             ),
             self.get_color(50)
         ).expect("Failed to create button");
         graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
             .expect("Failed to draw bar");
+        
+        let text = graphics::Text::new(
+            graphics::TextFragment::from(format!("INSERTION\nSORT"))
+                .scale(graphics::PxScale { x: 30.0, y: 30.0 }),
+        );
+        let text_dimensions = text.dimensions(ctx);
+        graphics::draw(
+            ctx,
+            &text,
+            graphics::DrawParam::default()
+                .color(EzColor::BLACK)
+                .dest(ggez::mint::Point2 {
+                    x: GRID_SIZE.0 * GRID_CELL_SIZE / 2.0 - BUTTON_SIZE * GRID_CELL_SIZE / 2.0 + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.w) / 2.0,
+                    y: 2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.h) / 2.0,
+                }),
+        ).expect("Failed to draw text.");
     
         let rectangle = graphics::Mesh::new_rectangle(
             ctx, 
             graphics::DrawMode::fill(), 
             graphics::Rect::new(
-                120.0 * GRID_CELL_SIZE - 30.0 * GRID_CELL_SIZE,
-                50.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
-                20.0 * GRID_CELL_SIZE,
+                GRID_SIZE.0 * GRID_CELL_SIZE - BUTTON_SIZE * GRID_CELL_SIZE - MARGIN_SIZE * GRID_CELL_SIZE,
+                2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
+                BUTTON_SIZE * GRID_CELL_SIZE,
             ),
             self.get_color(100)
         ).expect("Failed to create button");
         graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
             .expect("Failed to draw bar");
+
+        let text = graphics::Text::new(
+            graphics::TextFragment::from(format!("PANCAKE\nSORT"))
+                .scale(graphics::PxScale { x: 30.0, y: 30.0 }),
+        );
+        let text_dimensions = text.dimensions(ctx);
+        graphics::draw(
+            ctx,
+            &text,
+            graphics::DrawParam::default()
+                .color(EzColor::BLACK)
+                .dest(ggez::mint::Point2 {
+                    x: GRID_SIZE.0 * GRID_CELL_SIZE - BUTTON_SIZE * GRID_CELL_SIZE - MARGIN_SIZE * GRID_CELL_SIZE + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.w) / 2.0,
+                    y: 2.0 * MARGIN_SIZE * GRID_CELL_SIZE + ARRAY_AREA_SIZE.1 * GRID_CELL_SIZE + (BUTTON_SIZE * GRID_CELL_SIZE - text_dimensions.h) / 2.0,
+                }),
+        ).expect("Failed to draw text.");
         // #endregion
 
         graphics::present(ctx).expect("Failed to update graphics");
@@ -251,20 +307,17 @@ impl event::EventHandler<GameError> for AppState {
                     && x <= 30.0 * GRID_CELL_SIZE
                     && y >= 50.0 * GRID_CELL_SIZE
                     && y <= 70.0 * GRID_CELL_SIZE {
-                    println!{"Shuffle!"};
                     self.shuffle();
                 } else if x >= 60.0 * GRID_CELL_SIZE - 10.0 * GRID_CELL_SIZE 
                     && x <= 70.0 * GRID_CELL_SIZE
                     && y >= 50.0 * GRID_CELL_SIZE
                     && y <= 70.0 * GRID_CELL_SIZE {
-                    println!{"Insertion Sort!"};
                     self.algorithm = Algorithm::InsertionSort;
                     self.setup = true;
                 } else if x >= 120.0 * GRID_CELL_SIZE - 30.0 * GRID_CELL_SIZE 
                     && x <= 110.0 * GRID_CELL_SIZE
                     && y >= 50.0 * GRID_CELL_SIZE
                     && y <= 70.0 * GRID_CELL_SIZE  {
-                    println!{"Pancake Sort!"}
                     self.algorithm = Algorithm::PancakeSort;
                     self.setup = true;
                 }
