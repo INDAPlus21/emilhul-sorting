@@ -7,6 +7,7 @@
 * Clone repo
 * Build using `cargo build --release` from directory
 * Launch emilhul-sorting.exe
+* (Optional) Run unit tests with `cargo test -- --nocapture --test-threads=1`
 
 ### Option 2
 
