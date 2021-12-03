@@ -16,11 +16,10 @@
 
 ## How to use
 
-There's supposed to be button which you use to shuffle and sort the array.
-Well there are, I guess, ~~but not drawn out to the user~~ but not labeled (Yet!). So here are the controls:
+Once the application launches there are three labeled buttons:
 
-Going left to right:
+* First button shuffles the array
+* Second button sorts the array using [insertion sort](https://en.wikipedia.org/wiki/Insertion_sort)
+* Third button sorts the array using [pancake sort](https://en.wikipedia.org/wiki/Pancake_sorting)  
 
-* 1th button shuffles the array
-* 2nd button sorts the array using insertion sort
-* 3rd button sorts the array using pancake sort  
+Press the escape key (`esc`) to exit application
