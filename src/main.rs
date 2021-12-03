@@ -183,11 +183,54 @@ impl event::EventHandler<GameError> for AppState {
                     GRID_CELL_SIZE-5.0,
                     self.array[i] as f32 * (30.0 * GRID_CELL_SIZE)/100.0),
                 self.get_color(self.array[i])
-            )
-            .expect("Failed to create bar");
+            ).expect("Failed to create bar");
             graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
                 .expect("Failed to draw bar");
-        } 
+        }
+
+        // #region Buttons
+        let rectangle = graphics::Mesh::new_rectangle(
+            ctx, 
+            graphics::DrawMode::fill(), 
+            graphics::Rect::new(
+                10.0 * GRID_CELL_SIZE,
+                50.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+            ),
+            self.get_color(0)
+        ).expect("Failed to create button");
+        graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
+            .expect("Failed to draw bar");
+
+        let rectangle = graphics::Mesh::new_rectangle(
+            ctx, 
+            graphics::DrawMode::fill(), 
+            graphics::Rect::new(
+                60.0 * GRID_CELL_SIZE - 10.0 * GRID_CELL_SIZE,
+                50.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+            ),
+            self.get_color(50)
+        ).expect("Failed to create button");
+        graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
+            .expect("Failed to draw bar");
+    
+        let rectangle = graphics::Mesh::new_rectangle(
+            ctx, 
+            graphics::DrawMode::fill(), 
+            graphics::Rect::new(
+                120.0 * GRID_CELL_SIZE - 30.0 * GRID_CELL_SIZE,
+                50.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+                20.0 * GRID_CELL_SIZE,
+            ),
+            self.get_color(100)
+        ).expect("Failed to create button");
+        graphics::draw(ctx, &rectangle, graphics::DrawParam::default())
+            .expect("Failed to draw bar");
+        // #endregion
 
         graphics::present(ctx).expect("Failed to update graphics");
 
@@ -200,18 +243,27 @@ impl event::EventHandler<GameError> for AppState {
         _ctx: &mut Context,
         button: event::MouseButton,
         x: f32,
-        _y: f32,
+        y: f32,
     ) {
         if button == event::MouseButton::Left {
             if !self.sorting { // Lock input if sorting
-                if x <= SCREEN_SIZE.0/3.0 {
+                if x >= 10.0 * GRID_CELL_SIZE
+                    && x <= 30.0 * GRID_CELL_SIZE
+                    && y >= 50.0 * GRID_CELL_SIZE
+                    && y <= 70.0 * GRID_CELL_SIZE {
                     println!{"Shuffle!"};
                     self.shuffle();
-                } else if x > SCREEN_SIZE.0/3.0 && x < 2.0*SCREEN_SIZE.0/3.0 {
+                } else if x >= 60.0 * GRID_CELL_SIZE - 10.0 * GRID_CELL_SIZE 
+                    && x <= 70.0 * GRID_CELL_SIZE
+                    && y >= 50.0 * GRID_CELL_SIZE
+                    && y <= 70.0 * GRID_CELL_SIZE {
                     println!{"Insertion Sort!"};
                     self.algorithm = Algorithm::InsertionSort;
                     self.setup = true;
-                } else if x >= 2.0*SCREEN_SIZE.0/3.0 {
+                } else if x >= 120.0 * GRID_CELL_SIZE - 30.0 * GRID_CELL_SIZE 
+                    && x <= 110.0 * GRID_CELL_SIZE
+                    && y >= 50.0 * GRID_CELL_SIZE
+                    && y <= 70.0 * GRID_CELL_SIZE  {
                     println!{"Pancake Sort!"}
                     self.algorithm = Algorithm::PancakeSort;
                     self.setup = true;

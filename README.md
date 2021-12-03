@@ -16,10 +16,10 @@
 ## How to use
 
 There's supposed to be button which you use to shuffle and sort the array.
-Well there are, I guess, but not drawn out to the user (Yet!). So here are the invisible controls:
+Well there are, I guess, --but not drawn out to the user-- but not labeled (Yet!). So here are the controls:
 
-On the x axis:
+Going left to right:
 
-* 1th third of application window shuffles the array
-* 2nd third of application window sorts the array using insertion sort
-* 3rd third of application window sorts the array using pancake sort  
+* 1th button shuffles the array
+* 2nd button sorts the array using insertion sort
+* 3rd button sorts the array using pancake sort  
